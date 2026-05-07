@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: closecommunicate
+    env: node
+    rootDir: web
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: NODE_VERSION
+        value: "20.x"
