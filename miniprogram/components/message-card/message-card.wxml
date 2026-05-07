@@ -1,0 +1,13 @@
+<view class="msg-wrapper {{isMine ? 'mine' : ''}}">
+  <view class="msg-avatar">{{msg.nickname ? msg.nickname[0] : '匿'}}</view>
+  <view class="msg-body">
+    <view class="msg-meta">
+      <text class="msg-nickname">{{msg.nickname || '匿名'}}</text>
+      <text class="msg-time">{{timeText}}</text>
+    </view>
+    <view class="msg-bubble">
+      <text class="msg-content">{{msg.content}}</text>
+      <image wx:if="{{msg.type === 'image'}}" class="msg-image" src="{{msg.content}}" mode="widthFix" />
+    </view>
+  </view>
+</view>

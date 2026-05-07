@@ -1,0 +1,68 @@
+.forum-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.forum-card.child {
+  background: #fafafa;
+  border: 1rpx solid #eee;
+}
+
+.forum-main {
+  display: flex;
+  align-items: center;
+}
+
+.forum-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #07c160, #06ad56);
+  color: #fff;
+  font-size: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.forum-info {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.forum-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-bottom: 6rpx;
+}
+
+.forum-type {
+  font-size: 22rpx;
+  color: var(--text-light);
+}
+
+.forum-arrow {
+  color: #ccc;
+  font-size: 28rpx;
+}
+
+.forum-desc {
+  margin-top: 16rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.forum-footer {
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: var(--text-light);
+}

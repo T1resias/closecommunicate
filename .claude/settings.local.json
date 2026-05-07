@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(node server.js)",
+      "Bash(curl -s http://localhost:3456/api/login -X POST)",
+      "Bash(curl -s \"http://localhost:3456/api/forums?geohash=wx4g0ec&lat=39.9042&lng=116.4074\")",
+      "Bash(curl -s \"http://localhost:3456/\")",
+      "Bash(kill %1)",
+      "Bash(npx localtunnel *)",
+      "Read(//d/Temp/claude/E--closecommunicate/87bafcbe-8610-4243-87f4-8131b0b312fe/tasks/**)",
+      "Read(//d/Temp/claude/E--closecommunicate/87bafcbe-8610-4243-87f4-8131b0b312fe/**)",
+      "Bash(gh auth *)",
+      "Bash(winget install *)",
+      "Bash(C:/Program Files/GitHub CLI/gh.exe auth *)",
+      "Bash(C:/Program Files/GitHub CLI/gh.exe repo *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

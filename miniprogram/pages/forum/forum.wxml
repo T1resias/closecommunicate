@@ -1,0 +1,48 @@
+<view class="container">
+  <!-- 论坛头部信息 -->
+  <view class="forum-header card">
+    <view class="forum-name">{{forum.name}}</view>
+    <view class="forum-type">{{forumTypeText}}</view>
+    <view wx:if="{{forum.description}}" class="forum-desc">{{forum.description}}</view>
+    <view wx:if="{{forum.address}}" class="forum-address">
+      <view class="addr-dot"></view>
+      {{forum.address}}
+    </view>
+    <view class="forum-meta">
+      <text>{{forum.memberCount || 0}} 人在附近</text>
+      <text wx:if="{{distance}}"> · 距您 {{distance}}m</text>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <view class="msg-list">
+    <view wx:if="{{messages.length === 0 && !loading}}" class="empty-msg">
+      <text>暂无消息，发第一条吧</text>
+    </view>
+
+    <block wx:for="{{messages}}" wx:key="_id">
+      <message-card msg="{{item}}" isMine="{{item.openid === userId}}" />
+    </block>
+
+    <!-- 加载更多 -->
+    <view wx:if="{{loading}}" class="loading-tip">
+      <text>加载中...</text>
+    </view>
+    <view wx:elif="{{!hasMore && messages.length > 0}}" class="loading-tip">
+      <text>没有更多了</text>
+    </view>
+  </view>
+
+  <!-- 输入栏 -->
+  <view class="input-bar">
+    <input
+      class="msg-input"
+      value="{{inputValue}}"
+      placeholder="说点什么..."
+      confirm-type="send"
+      bindconfirm="onSend"
+      maxlength="1000"
+    />
+    <button class="send-btn" bindtap="onSend" disabled="{{!inputValue.trim()}}">发送</button>
+  </view>
+</view>

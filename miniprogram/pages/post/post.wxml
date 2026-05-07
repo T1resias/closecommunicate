@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="card">
+    <view class="forum-tag">{{forumName}}</view>
+    <textarea
+      class="post-input"
+      value="{{content}}"
+      placeholder="分享你在这里的见闻..."
+      maxlength="1000"
+      auto-focus
+      bindinput="onInput"
+    />
+    <view class="char-count">{{content.length}}/1000</view>
+  </view>
+
+  <button class="submit-btn" bindtap="onSubmit" disabled="{{!content.trim()}}">
+    发布
+  </button>
+</view>

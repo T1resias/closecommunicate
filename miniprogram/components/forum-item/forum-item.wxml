@@ -1,0 +1,15 @@
+<view class="forum-card {{child ? 'child' : ''}}" bindtap="onTap">
+  <view class="forum-main">
+    <view class="forum-icon">{{forum.name[0] || '地'}}</view>
+    <view class="forum-info">
+      <view class="forum-name">{{forum.name}}</view>
+      <view class="forum-type">{{typeText}}</view>
+    </view>
+    <view class="forum-arrow">></view>
+  </view>
+  <view wx:if="{{forum.description}}" class="forum-desc">{{forum.description}}</view>
+  <view class="forum-footer">
+    <text wx:if="{{forum.memberCount}}">{{forum.memberCount}} 人在线</text>
+    <text wx:if="{{forum.lastActiveTime}}"> · {{lastActive}}</text>
+  </view>
+</view>

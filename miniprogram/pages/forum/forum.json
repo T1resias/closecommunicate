@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "论坛",
+  "usingComponents": {
+    "message-card": "/components/message-card/message-card"
+  }
+}

@@ -1,0 +1,53 @@
+<view class="container">
+  <!-- 位置状态栏 -->
+  <view class="location-bar">
+    <view class="location-dot"></view>
+    <text wx:if="{{locationError}}">位置获取失败，请授权位置权限</text>
+    <text wx:elif="{{loading}}">正在获取位置...</text>
+    <text wx:else>当前: {{currentAddress || '定位中...'}}</text>
+    <button wx:if="{{locationError}}" class="retry-btn" bindtap="onRetryLocation">重试</button>
+  </view>
+
+  <!-- 错误状态 -->
+  <view wx:if="{{error}}" class="error-card card">
+    <text>{{error}}</text>
+    <button class="retry-btn" bindtap="loadForums">重新加载</button>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:elif="{{loading}}" class="loading">
+    <view class="loading-spinner"></view>
+    <text>正在搜索附近论坛...</text>
+  </view>
+
+  <!-- 论坛列表 -->
+  <view wx:else>
+    <view wx:if="{{forums.length === 0}}" class="empty card">
+      <text>附近暂无论坛</text>
+      <text class="sub-text">换个地方看看？</text>
+    </view>
+
+    <block wx:for="{{forums}}" wx:key="_id">
+      <forum-item
+        forum="{{item}}"
+        bind:tap="onForumTap"
+      />
+      <!-- 子论坛 -->
+      <view wx:if="{{item.children.length}}" class="child-forums">
+        <forum-item
+          wx:for="{{item.children}}"
+          wx:for-item="child"
+          wx:key="_id"
+          forum="{{child}}"
+          child="{{true}}"
+          bind:tap="onForumTap"
+        />
+      </view>
+    </block>
+
+    <!-- 底部提示 -->
+    <view class="tip">
+      <text>论坛基于实时地理位置匹配，离开范围后自动退出</text>
+    </view>
+  </view>
+</view>

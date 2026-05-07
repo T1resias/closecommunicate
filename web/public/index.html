@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>附近聊聊</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 首页：论坛列表 -->
+    <div id="page-home" class="page active">
+      <div class="location-bar" id="locationBar">
+        <span id="locationStatus">正在定位...</span>
+      </div>
+      <div id="forumList" class="forum-list">
+        <div class="loading" id="homeLoading">
+          <div class="spinner"></div>
+          <p>正在搜索附近论坛...</p>
+        </div>
+      </div>
+      <div class="bottom-tip">论坛基于实时位置匹配，离开后自动退出</div>
+    </div>
+
+    <!-- 论坛详情页 -->
+    <div id="page-forum" class="page">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="goHome()">← 返回</button>
+        <span class="nav-title" id="forumTitle">论坛</span>
+      </div>
+      <div class="forum-header card" id="forumHeader">
+        <div class="forum-name" id="forumName"></div>
+        <div class="forum-type" id="forumType"></div>
+        <div class="forum-desc" id="forumDesc"></div>
+        <div class="forum-address" id="forumAddr"></div>
+        <div class="forum-meta" id="forumMeta"></div>
+      </div>
+      <div class="msg-list" id="msgList">
+        <div class="loading" id="msgLoading"><p>加载中...</p></div>
+      </div>
+      <div class="input-bar">
+        <input class="msg-input" id="msgInput" placeholder="说点什么..." maxlength="1000" onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="send-btn" onclick="sendMsg()">发送</button>
+      </div>
+    </div>
+
+    <!-- 发帖页 -->
+    <div id="page-post" class="page">
+      <div class="nav-bar">
+        <button class="back-btn" onclick="goBack()">← 取消</button>
+        <span class="nav-title">发帖</span>
+      </div>
+      <div class="card">
+        <span class="tag" id="postForumName"></span>
+        <textarea class="post-input" id="postContent" placeholder="分享你的见闻..." maxlength="1000"></textarea>
+        <div class="char-count"><span id="charCount">0</span>/1000</div>
+      </div>
+      <button class="submit-btn" onclick="submitPost()">发布</button>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

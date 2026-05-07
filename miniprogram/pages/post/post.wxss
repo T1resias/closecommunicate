@@ -1,0 +1,35 @@
+.forum-tag {
+  display: inline-block;
+  background: #e8f8ef;
+  color: var(--primary);
+  font-size: 22rpx;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.post-input {
+  width: 100%;
+  min-height: 300rpx;
+  font-size: 30rpx;
+  line-height: 1.6;
+}
+
+.char-count {
+  text-align: right;
+  color: var(--text-light);
+  font-size: 24rpx;
+  margin-top: 20rpx;
+}
+
+.submit-btn {
+  margin-top: 40rpx;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+}
+
+.submit-btn[disabled] {
+  background: #c0c0c0;
+}

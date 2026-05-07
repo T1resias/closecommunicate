@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "附近论坛",
+  "usingComponents": {
+    "forum-item": "/components/forum-item/forum-item"
+  },
+  "enablePullDownRefresh": true
+}
