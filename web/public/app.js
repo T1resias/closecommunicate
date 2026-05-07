@@ -322,6 +322,42 @@ function escapeHtml(s) {
 }
 
 // ═══════════════════════════════════════════════════════════
+// 创建论坛
+// ═══════════════════════════════════════════════════════════
+function showCreateForum() {
+  if (!currentLoc) {
+    alert('请先授权位置信息')
+    return
+  }
+  document.getElementById('createModal').style.display = 'flex'
+  document.getElementById('createName').value = ''
+  document.getElementById('createDesc').value = ''
+  document.getElementById('createName').focus()
+}
+
+function hideCreateForum() {
+  document.getElementById('createModal').style.display = 'none'
+}
+
+async function createForum() {
+  const name = document.getElementById('createName').value.trim()
+  const description = document.getElementById('createDesc').value.trim()
+  if (!name) return alert('请输入论坛名称')
+
+  const data = await api('/api/forums', {
+    method: 'POST',
+    body: { name, description, lat: currentLoc.lat, lng: currentLoc.lng, geohash: currentGeohash }
+  })
+
+  if (data.code === 0) {
+    hideCreateForum()
+    await loadForums()
+  } else {
+    alert(data.msg || '创建失败')
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
 // 启动
 // ═══════════════════════════════════════════════════════════
 async function init() {

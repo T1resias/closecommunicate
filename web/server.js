@@ -110,9 +110,9 @@ app.put('/api/presence', (req, res) => {
   res.json({ code: 0, geohash: gh })
 })
 
-// ─── 获取附近论坛 ──────────────────────────────────────────
-app.get('/api/forums', (req, res) => {
-  const { geohash } = req.query
+// ─── 获取附近论坛（无匹配时自动创建）──────────────────────
+app.get('/api/forums', async (req, res) => {
+  const { geohash, lat, lng } = req.query
   if (!geohash) return res.json({ code: 1, forums: [] })
 
   const prefixes = []
@@ -120,6 +120,12 @@ app.get('/api/forums', (req, res) => {
 
   let forums = DB.forums.filter(f => prefixes.some(p => f.geohash.startsWith(p)))
   forums.sort((a, b) => b.geohash.length - a.geohash.length)
+
+  // 附近没有论坛 → 自动根据地图 POI 创建
+  if (forums.length === 0 && lat && lng) {
+    const newForum = await autoCreateForum(parseFloat(lat), parseFloat(lng), geohash)
+    if (newForum) forums.push(newForum)
+  }
 
   // 计算在线人数
   forums.forEach(f => {
@@ -135,6 +141,89 @@ app.get('/api/forums', (req, res) => {
   })
 
   res.json({ code: 0, forums })
+})
+
+async function autoCreateForum(lat, lng, userGeohash) {
+  try {
+    const url = `https://apis.map.qq.com/ws/geocoder/v1/?location=${lat},${lng}&key=${MAP_KEY}&get_poi=1`
+    const data = await fetch(url).then(r => r.json())
+    if (data.status !== 0 || !data.result) return null
+
+    const addr = data.result.address_component || {}
+    const pois = data.result.pois || []
+    const gh6 = userGeohash.slice(0, 6)
+
+    // 检查是否已有同 geohash 的论坛
+    const exists = DB.forums.find(f => f.geohash === gh6)
+    if (exists) return exists
+
+    const name = pois.length > 0 ? pois[0].title : (addr.street || addr.district || '附近地点')
+    const forum = {
+      id: DB.nextId++,
+      name,
+      type: 'other',
+      geohash: gh6,
+      lat, lng,
+      description: pois.length > 0 ? `位于${addr.district || ''}${addr.street || ''}附近` : (data.result.address || ''),
+      address: data.result.address || '',
+      member_count: 0,
+      last_active_time: Date.now()
+    }
+    DB.forums.push(forum)
+    saveDB()
+    console.log('自动创建论坛:', name, gh6)
+    return forum
+  } catch (e) {
+    console.error('自动创建论坛失败:', e.message)
+    return null
+  }
+}
+
+// ─── 手动创建论坛 ──────────────────────────────────────────
+app.post('/api/forums', async (req, res) => {
+  const userId = getUserId(req)
+  const { name, description, geohash, lat, lng } = req.body
+  if (!name || !lat || !lng) return res.json({ code: 1, msg: '缺少必填字段' })
+
+  const presence = DB.presences.find(p => p.user_id === userId)
+  if (!presence || Date.now() - presence.last_update > PRESENCE_TTL) {
+    return res.json({ code: 2, msg: '请先授权位置信息' })
+  }
+
+  const gh6 = (geohash || geohashEncode(lat, lng)).slice(0, 6)
+
+  // 同 geohash 不重复创建
+  const exists = DB.forums.find(f => f.geohash === gh6)
+  if (exists) return res.json({ code: 3, msg: '该位置已有论坛', forumId: exists.id })
+
+  let desc = description || ''
+  let addr = ''
+  if (!description) {
+    try {
+      const url = `https://apis.map.qq.com/ws/geocoder/v1/?location=${lat},${lng}&key=${MAP_KEY}&get_poi=1`
+      const data = await fetch(url).then(r => r.json())
+      if (data.status === 0 && data.result) {
+        addr = data.result.address || ''
+        if (!desc) desc = data.result.address || ''
+      }
+    } catch (_) {}
+  }
+
+  const forum = {
+    id: DB.nextId++,
+    name,
+    type: 'other',
+    geohash: gh6,
+    lat: parseFloat(lat),
+    lng: parseFloat(lng),
+    description: desc,
+    address: addr,
+    member_count: 0,
+    last_active_time: Date.now()
+  }
+  DB.forums.push(forum)
+  saveDB()
+  res.json({ code: 0, forum })
 })
 
 // ─── 获取消息 ──────────────────────────────────────────────

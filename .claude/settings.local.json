@@ -15,7 +15,9 @@
       "Bash(C:/Program Files/GitHub CLI/gh.exe auth *)",
       "Bash(C:/Program Files/GitHub CLI/gh.exe repo *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git config *)",
+      "Bash(git push *)"
     ]
   }
 }

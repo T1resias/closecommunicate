@@ -19,7 +19,22 @@
           <p>正在搜索附近论坛...</p>
         </div>
       </div>
+      <button class="create-btn" onclick="showCreateForum()">+ 创建论坛</button>
       <div class="bottom-tip">论坛基于实时位置匹配，离开后自动退出</div>
+    </div>
+
+    <!-- 创建论坛弹窗 -->
+    <div id="createModal" class="modal" style="display:none" onclick="if(event.target===this)hideCreateForum()">
+      <div class="modal-content card">
+        <div class="modal-title">创建附近论坛</div>
+        <p style="color:#999;font-size:13px;margin-bottom:12px">当前位置自动填充，你所在位置 ±600m 范围内的人都能看到</p>
+        <input class="modal-input" id="createName" placeholder="论坛名称（如 XX小区、XX商场）" maxlength="30">
+        <textarea class="modal-textarea" id="createDesc" placeholder="简介（选填）" maxlength="200"></textarea>
+        <div class="modal-btns">
+          <button class="modal-cancel" onclick="hideCreateForum()">取消</button>
+          <button class="modal-ok" onclick="createForum()">创建</button>
+        </div>
+      </div>
     </div>
 
     <!-- 论坛详情页 -->
